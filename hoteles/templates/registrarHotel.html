@@ -1,0 +1,114 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+
+{% block titulo %}
+    Registar USusarios
+{% endblock titulo %}
+
+{% block header %}
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 py-4">
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock header %}
+
+
+
+{% block contenido %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
+            <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
+            <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+            <form action="{% url 'hotel:crearhotel' %}" method="POST"  >
+                
+                {% csrf_token %}
+                
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        {% if form.error_messages %}
+                          <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss = "alert" aria-label = "Close">
+                              <span aria-hidden = "true">&times;</span>
+                            </button>
+                            {% if user.is_authenticated %}
+                                <strong>Advertencia: </strong> {{ form.error_messages }}
+                            {%else%}
+                                <strong>Advertencia: </strong> {{ 'Tiene que loagearse para poder registrar un Hotel' }}
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        <label>Nombre</label>
+                        {{ form.nombre }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Telefono</label>
+                        {{ form.telefono }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Pais</label>
+                        {{ form.pais }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Comunidad</label>
+                        {{ form.comunidad }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Ciudad</label>
+                        {{ form.ciudad }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Direccion</label>
+                        {{ form.direccion }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Correo</label>
+                        {{ form.correo }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Descripcion Rapida</label>
+                        {{ form.descripcionRapida }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <br>
+                <div id="success"></div>
+                <div class=" clearfix">
+                    <button type="button" class="btn btn-warning"><a href = "{% url 'index' %}">Volver</a></button>
+                    <button type="submit" class="btn btn-primary float-right"> Registrar</button>
+                </diregistrarHote
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

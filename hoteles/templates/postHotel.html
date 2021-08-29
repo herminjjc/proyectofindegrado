@@ -1,0 +1,95 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+
+{% block titulo %}
+Post Hotel
+{% endblock titulo %}
+
+{% block contenido %}
+<article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <h2 class="section-heading">{{hotel.nombre}}</h2>
+          <p>{{hotel.descripcionRapida}}</p>
+          <h6>{{hotel.direccion}} </h6>
+          <h6>{{hotel.ciudad}} </h6>
+          <h6>{{hotel.telefono}} </h6>
+        </div>
+        <div class="col-lg-8 col-md-10 mx-auto">
+        {% if satisfaction != 0%}
+          <h1>Tiene una satisfacion del cliente de {{satisfaction}}</h1>
+        {% else %}
+          <p>No tiene  comentarios para calcular la satisfacion del los clientes en base a su comentario </p> 
+        {% endif %}
+        </div> 
+      </div>
+    </div>
+  </article>
+
+  <div class="container">
+    <div class="row row-md-8">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <h1>Comentar</h1>
+        <div class="well well-sm">
+            <form class="form-horizontal" action="{% url 'hotel:postHotel' hotel.id %}" method="post">
+              
+                <fieldset>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                        <div class="col-md-8">
+                            <input id="fname" name="nombre" type="text" placeholder={{user.username}} class="form-control" value = {{user.username}}>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
+                        <div class="col-md-8">
+                            <textarea class="form-control " id="comentario" name="comentario"  resize = 'NONE' placeholder="Comenta tu experienza en el hotel" rows="7"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-dark btn-lg">Comentar</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="container">
+    <div class="row">
+    
+      {%for coment in hotel.comentario_set.all%}
+        <div class="col-lg-8 col-md-8 mx-auto">
+          <div class="card">
+            <div class="card-header">
+              {{coment.nombre}}
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{coment.comentario}}</p>
+            </div>
+              <div class="card-footer text-muted">
+                 sentimiento
+                {% if coment.sentiment == True%}
+                    Positivo
+                {%else%}
+                    Negativo
+                {%endif%}
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      
+    </div>
+   </div>
+  
+{% endblock contenido %}
+

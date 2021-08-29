@@ -1,0 +1,187 @@
+<!--añadimos el tag de static para los archivos estaticos-->
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{% block titulo %}Holidays {% endblock titulo %}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+    type='text/css'>
+  <link
+    href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+    rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/clean-blog.min.css' %}" rel="stylesheet">
+    
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  {% block navegacion %}
+  <nav class="navbar navbar-expand-lg bg-primary navbar-ligth fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">Holidays</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+          </li>
+          {% if user.username %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'hotel:crearhotel' %}">RegistrarHotel</a>
+            </li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <div class="dropdown-divider"></div>
+                        {% if user.username %}
+                          <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
+                        {% else %}
+                          <a class="dropdown-item" href="{% url 'login'%}">Login</a>
+                          <a class="dropdown-item" href="{% url 'registrarusuario' %}">Registar</a>
+                        {% endif %}
+
+                    </div>
+                </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% endblock navegacion %}
+
+
+  {% block header %}
+  <!-- Page Header -->
+  <header class="masthead"
+    style="background-image: url({% block imagen %} {% static 'img/home.jpg' %} {% endblock imagen %})">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h2>{{ user.username }}</h2>
+              <form class="form-inline" action="{% url 'hotel:buscarhotel' %}" method = "POST">
+                {% csrf_token %}
+                <input class="form-control" type="text" placeholder="Search"  name= "search" aria-label="Search">
+                <button class="btn btn-primary" type="submit">Search</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  {% endblock header %}
+
+  <!-- Main Content -->
+  {% block contenido %}
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {%if hotels%}  
+              {%for hotel in hotels%} 
+
+                <div class = "row">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{hotel.nombre }}</h5>
+                      <p class="card-text">{{ hotel.descripcionRapida }}</p>
+                      <p >{{ hotel.ciudad }}</small></p>
+                      <p >{{ hotel.direccion }}</small></p>
+                      <p >{{ hotel.correo }}</small></p>
+                      <a href= "{% url 'hotel:postHotel' hotel.id %}" class="btn btn-primary"> Ver Hotel </a>
+                    </div>                          
+                  </div>
+                </div>
+                <p></p>
+              {% endfor %}
+            {%else%}
+              <div class="card">
+                <div class="card-body">
+                  <p> No hay hoteles a mostrar Tiene que funcionar</p>
+                </div>
+              </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endblock contenido %}
+
+  <hr>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a href="https://twitter.com/?lang=es">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://es-es.facebook.com/">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-instagram-square fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy; WebHotel 2021</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'js/clean-blog.min.js' %}"></script>
+
+
+    <!--para mostara un mensaje por pantalla de bien venida-->
+  <script>$(document).ready(function(){
+    $(".toast").toast("show");
+  });</script>
+
+</body>
+
+</html>
